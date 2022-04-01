@@ -4,23 +4,11 @@
 const api = (() => {
   const key = '2e64fad7f4f5faa25c97c2f877a4d7e2';
 
-  const getLatLon = async (location) => {
-    const urlLocation = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${key}`;
-    try {
-      const response = await fetch(urlLocation, { mode: 'cors' });
-      const data = await response.json();
-      const lat = data[0].lat;
-      const lon = data[0].lon;
-      const country = data[0].country;
-      return { lat, lon, country };
-    } catch (error) {
-      console.log('Error:', error);
-    }
-  };
-
   const getWeather = async (location) => {
-    const latLon = await getLatLon(location);
-    const urlLatLon = `https://api.openweathermap.org/data/2.5/weather?lat=${latLon.lat}&lon=${latLon.lon}&appid=${key}&units=metric`;
+    /*
+    *  Get the weather data the selected location
+    */
+    const urlLatLon = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${key}&units=metric`;
     try {
       const response = await fetch(urlLatLon, { mode: 'cors' });
       const data = await response.json();
@@ -33,11 +21,13 @@ const api = (() => {
   return { getWeather };
 })();
 
-const weather = async (location) => {
-  const data = await api.getWeather(location);
+const weatherObj = (data) => {
+  /*
+  *  Object with all weather data
+  */
 
   const temperatureObj = (tempData) => {
-    const celsiusToFahrenheit = (temp) => (temp * 9 / 5) + 32;
+    const celsiusToFahrenheit = (temp) => Math.round((temp * 9 / 5) + 32);
 
     const fahrenheitObj = (tempData) => {
       const current = celsiusToFahrenheit(tempData.temp);
@@ -49,10 +39,10 @@ const weather = async (location) => {
       };
     };
     const celsiusObj = (tempData) => {
-      const current = tempData.temp;
-      const feel = tempData.feels_like;
-      const min = tempData.temp_min;
-      const max = tempData.temp_max;
+      const current = Math.round(tempData.temp);
+      const feel = Math.round(tempData.feels_like);
+      const min = Math.round(tempData.temp_min);
+      const max = Math.round(tempData.temp_max);
       return {
         current, feel, max, min,
       };
@@ -65,16 +55,32 @@ const weather = async (location) => {
   };
 
   const windObj = (windData) => {
-    const speed = windData.speed;
+    const degreeToDirection = (deg) => {
+      /*
+      *  Convert 0-360º to direction (N, S,...)
+      */
+      const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      // Split into the 8 directions
+      const degrees = deg * 8 / 360;
+      let index = Math.round(degrees);
+      // Ensure it's within 0-7
+      index = (index + 8) % 8;
+
+      return directions[index];
+    };
+    // Convert speed from m/s to km/h and round result
+    const speed = Math.round(windData.speed * 3.6);
     const deg = windData.deg;
+    const direction = degreeToDirection(deg);
     return {
-      speed, deg,
+      speed, deg, direction,
     };
   };
 
   const summary = data.weather[0].main;
   const description = data.weather[0].description;
   const icon = data.weather[0].icon;
+  const iconURL = `http://openweathermap.org/img/wn/${icon}@2x.png`;
   const temperature = temperatureObj(data.main);
   const pressure = data.main.pressure;
   const humidity = data.main.humidity;
@@ -83,14 +89,39 @@ const weather = async (location) => {
   const country = data.sys.country;
 
   return {
-    summary, description, icon, temperature, pressure, humidity, wind, name, country,
+    summary, description, iconURL, temperature, pressure, humidity, wind, name, country,
   };
 };
 
-async function main(location) {
-  let weatherData = await weather('London');
-  console.table(weatherData);
-  weatherData = await weather('Museros');
-  console.table(weatherData);
+const unitIsCelsius = true;
+function updateDOM(weatherData) {
+  document.querySelector('#icon').src = weatherData.iconURL;
+  document.querySelector('#description').textContent = weatherData.description;
+  document.querySelector('#city').textContent = `${weatherData.name}, ${weatherData.country}`;
+  if (unitIsCelsius) {
+    document.querySelector('#temp').textContent = `${weatherData.temperature.celsius.current} ºC`;
+    document.querySelector('#feels').textContent = `${weatherData.temperature.celsius.feel} ºC`;
+  } else {
+    document.querySelector('#temp').textContent = `${weatherData.temperature.fahrenheit.current} ºF`;
+    document.querySelector('#feels').textContent = `${weatherData.temperature.fahrenheit.feel} ºF`;
+  }
+  document.querySelector('#humidity').textContent = `${weatherData.humidity} %`;
+  document.querySelector('#wind').textContent = `${weatherData.wind.speed} km/h ${weatherData.wind.direction}`;
+  document.querySelector('#pressure').textContent = `${weatherData.pressure} mbar`;
 }
-main();
+async function main(location) {
+  const data = await api.getWeather(location);
+  const weather = weatherObj(data);
+  console.log(weather);
+  updateDOM(weather);
+}
+
+const searchForm = document.querySelector('#search-form');
+searchForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const searchBar = document.querySelector('#search-bar');
+  main(searchBar.value);
+  searchBar.value = '';
+});
+
+main('Museros');

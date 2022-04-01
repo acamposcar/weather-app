@@ -69,4 +69,23 @@ button:active{
     width: 100vw;
     height: 100vh;
     padding: 1em;
+    display:grid;
+    grid-template-columns: 1fr 2fr 1fr ;
+    grid-template-rows: 2fr 1fr;
+
+
+}
+
+#left-bar{
+    border: solid red;
+}
+#time{
+    border: solid blue;
+}
+#right-bar{
+    border: solid orange;
+}
+#footer{
+    grid-column: span 3;
+    border: solid green;
 }

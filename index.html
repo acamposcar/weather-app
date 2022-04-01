@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="app.js" defer></script>
@@ -13,9 +18,45 @@
 
 <body>
     <div class="container">
-        <div id="left-bar"></div>
-        <div id="time"></div>
-        <div id="right-bar"></div>
+        <div id="left-bar">
+            <div id="summary">
+                <img id='icon' src="#" alt="Weather Icon">
+                <div id="description"></div>
+            </div>
+            <div id="city"></div>
+            <div id="temp"></div>
+            <div id="feels"></div>
+        </div>
+        <div id="center">
+            <form id="search-form">
+                <input id="search-bar" placeholder="Search location">
+            </form>
+            <div id="time">12:30</div>
+        </div>
+        <div id="right-bar">
+            <div id="humidity" class="group">
+                <span class="material-icons-outlined">
+                    water_drop
+                </span>
+                <div class="text">Humidity</div>
+                <div id="humidity-value" class="value"></div>
+            </div>
+            <div id="pressure" class="group">
+                <span class="material-icons-outlined">
+                    compress
+                </span>
+                <div class="text">Pressure</div>
+                <div id="pressure-value" class="value"></div>
+            </div>
+            <div id="wind" class="group">
+                <span class="material-icons-outlined">
+                    air
+                </span>
+                <div class="text">Wind</div>
+                <div id="wind-value" class="value"></div>
+            </div>
+        </div>
+
         <div id="footer"></div>
     </div>
 </body>

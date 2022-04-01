@@ -100,14 +100,14 @@ function updateDOM(weatherData) {
   document.querySelector('#city').textContent = `${weatherData.name}, ${weatherData.country}`;
   if (unitIsCelsius) {
     document.querySelector('#temp').textContent = `${weatherData.temperature.celsius.current} ºC`;
-    document.querySelector('#feels').textContent = `${weatherData.temperature.celsius.feel} ºC`;
+    document.querySelector('#feels').textContent = `Feels like ${weatherData.temperature.celsius.feel} ºC`;
   } else {
     document.querySelector('#temp').textContent = `${weatherData.temperature.fahrenheit.current} ºF`;
     document.querySelector('#feels').textContent = `${weatherData.temperature.fahrenheit.feel} ºF`;
   }
-  document.querySelector('#humidity').textContent = `${weatherData.humidity} %`;
-  document.querySelector('#wind').textContent = `${weatherData.wind.speed} km/h ${weatherData.wind.direction}`;
-  document.querySelector('#pressure').textContent = `${weatherData.pressure} mbar`;
+  document.querySelector('#humidity-value').textContent = `${weatherData.humidity} %`;
+  document.querySelector('#wind-value').textContent = `${weatherData.wind.speed} km/h ${weatherData.wind.direction}`;
+  document.querySelector('#pressure-value').textContent = `${weatherData.pressure} mbar`;
 }
 async function main(location) {
   const data = await api.getWeather(location);

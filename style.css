@@ -11,7 +11,6 @@ body{
 	border: 0px solid transparent;
     font-family: Roboto, sans-serif;
     color: white;
-    font-size: 30px;
 }
 
 a{
@@ -80,22 +79,38 @@ button:active{
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
 }
+#icon{
+    width: 8rem;;
+}
 
 #left-bar{
 
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 #description{
     text-transform: capitalize;
+    font-size: 1.2rem;
+    color: rgba(189, 189, 189, 0.856);
 }
-#city{
 
+#info{
+    padding-left: 2rem;
+}
+
+#city{
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
 }
 #temp{
+    margin-top: 1.5rem;
     font-size: 4rem;
     font-weight: bold;
 }
 #feels{
+    font-size: 1.2rem;
+    color: rgba(189, 189, 189, 0.856);
 
 }
 #center{
@@ -107,8 +122,13 @@ button:active{
     outline: none;
     font-size: 1rem;
     padding: 0.25rem 0.75rem;
-    border: none;
-    border-radius: 1em;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: solid thin rgba(189, 189, 189, 0.856);;
+    background-color: transparent;
+    color: white;
+    text-align: center;
 }
 #time{
 
@@ -118,9 +138,10 @@ button:active{
 #right-bar{
     display: grid;
     grid-auto-rows: max-content;
-    gap: 1.5em;
+    gap: 3rem;
     justify-content: end;
     align-content: center;
+    padding-right: 2rem;
 
 }
 .group{
@@ -154,5 +175,4 @@ button:active{
 }
 #footer{
     grid-column: span 3;
-    border: solid green;
 }

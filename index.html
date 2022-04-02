@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="/weather-icons/weather-icons-wind.min.css">
+    <link rel="stylesheet" href="/weather-icons/weather-icons.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="app.js" defer></script>
@@ -19,13 +21,18 @@
 <body>
     <div class="container">
         <div id="left-bar">
-            <div id="summary">
-                <img id='icon' src="#" alt="Weather Icon">
+
+            <img id='icon' src="#" alt="Weather Icon">
+
+            <div id="info">
                 <div id="description"></div>
+
+
+                <div id="city"></div>
+
+                <div id="temp"></div>
+                <div id="feels"></div>
             </div>
-            <div id="city"></div>
-            <div id="temp"></div>
-            <div id="feels"></div>
         </div>
         <div id="center">
             <form id="search-form">

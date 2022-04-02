@@ -80,7 +80,7 @@ const weatherObj = (data) => {
   const summary = data.weather[0].main;
   const description = data.weather[0].description;
   const icon = data.weather[0].icon;
-  const iconURL = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  const iconURL = `/svg/${icon}.svg`;
   const temperature = temperatureObj(data.main);
   const pressure = data.main.pressure;
   const humidity = data.main.humidity;

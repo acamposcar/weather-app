@@ -70,7 +70,7 @@ button:active{
     margin: 0 auto;
     width: 100vw;
     height: 100vh;
-    padding: 3rem;
+    padding: 2rem 2rem 1rem 2rem;
     display:grid;
     grid-template-columns: 1fr 2fr 1fr ;
     grid-template-rows: 2fr 1fr;
@@ -173,6 +173,23 @@ button:active{
 #wind{
     
 }
-#footer{
+#forecast{
     grid-column: span 3;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-day{
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.forecast-temp-max{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.forecast-icon{
+    width: 4rem;;
 }

@@ -246,7 +246,8 @@ button:active{
         grid-template-columns: 1fr;
         gap: 15px;
         grid-template-rows: 50px max(10vh, 60px) 15vh 60vh;
-        
+        overflow: auto;
+
     }
 
     #forecast{
@@ -255,7 +256,6 @@ button:active{
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        overflow: auto;
     }
 
     .forecast-card{

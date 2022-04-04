@@ -127,7 +127,7 @@ function updateTime(timezoneOffset) {
   document.querySelector('#time').textContent = `${hours}:${minutes}`;
 }
 
-function currentUpdateDOM(weatherData, location, country) {
+function currentWeatherDOM(weatherData, location, country) {
   document.querySelector('#icon').src = weatherData.iconURL;
   document.querySelector('#description').textContent = weatherData.summary;
   document.querySelector('#city').textContent = `${location}, ${country}`;
@@ -146,7 +146,7 @@ function currentUpdateDOM(weatherData, location, country) {
   document.querySelector('#pressure-value').textContent = `${weatherData.pressure} mbar`;
 }
 
-function forecastUpdateDOM(weatherData) {
+function forecastWeatherDOM(weatherData) {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const today = new Date().getDay();
   weatherData.forEach((dayData, i) => {
@@ -178,8 +178,8 @@ function updateDOMHandler(weatherData, currentWeather, forecastWeather) {
   const timezoneOffset = weatherData.data.timezone_offset;
 
   updateTime(timezoneOffset);
-  currentUpdateDOM(currentWeather, locationName, country);
-  forecastUpdateDOM(forecastWeather);
+  currentWeatherDOM(currentWeather, locationName, country);
+  forecastWeatherDOM(forecastWeather);
   clearInterval(timeInterval);
 
   timeInterval = setInterval(() => updateTime(timezoneOffset), 10000);

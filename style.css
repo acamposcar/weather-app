@@ -17,7 +17,7 @@ body{
     background-repeat: no-repeat; 
     background-size: cover; 
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 a{
@@ -81,7 +81,8 @@ button:active{
     height: 100%;
     padding: clamp(10px, 1.2vw, 32px);
     grid-template-columns: 1fr 2fr 1fr ;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 55vh 30vh;
+
 }
 
 #icon{
@@ -258,7 +259,7 @@ button:active{
 
     .forecast-card{
         display: grid;
-        grid-template-columns: 90px 50px 60px 50px 50px 60px;
+        grid-template-columns: 80px 50px 60px 45px 50px 55px;
         align-items: center;
         justify-content: center;
         margin-bottom: 15px;

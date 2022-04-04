@@ -81,7 +81,7 @@ button:active{
     height: 100%;
     padding: clamp(10px, 1.2vw, 32px);
     grid-template-columns: 1fr 2fr 1fr ;
-    grid-template-rows: 65vh 30vh;
+    grid-template-rows: 60vh 30vh;
 
 }
 
@@ -245,7 +245,7 @@ button:active{
         padding: 0px;
         grid-template-columns: 1fr;
         gap: 15px;
-        grid-template-rows: 5vh 10vh 15vh 60vh;
+        grid-template-rows: 50px max(10vh, 60px) 15vh 60vh;
         
     }
 

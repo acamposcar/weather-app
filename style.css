@@ -242,11 +242,11 @@ button:active{
 
     .container{
         /* Hide page until JS is fully loaded*/
-        padding: 5px;
+        padding: 0px;
         grid-template-columns: 1fr;
         gap: 15px;
-        grid-template-rows: 5vh 10vh 15vh 50vh;
-        padding-right: 1em;
+        grid-template-rows: 5vh 10vh 15vh 60vh;
+        
     }
 
     #forecast{
@@ -255,6 +255,7 @@ button:active{
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow: auto;
     }
 
     .forecast-card{

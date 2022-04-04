@@ -2,6 +2,7 @@
 // @ts-check
 
 const unitIsCelsius = true;
+let timeInterval;
 
 const api = (() => {
   const key = '2e64fad7f4f5faa25c97c2f877a4d7e2';
@@ -180,7 +181,8 @@ async function update(location) {
   updateTime(timezoneOffset);
   currentUpdateDOM(currentWeather, locationName, country);
   forecastUpdateDOM(forecastWeather);
-  setInterval(() => updateTime(timezoneOffset), 10000);
+  clearInterval(timeInterval);
+  timeInterval = setInterval(() => updateTime(timezoneOffset), 10000);
   // Display page after JS is loaded
   document.querySelector('.container').style.display = 'grid';
 }

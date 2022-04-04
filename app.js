@@ -10,7 +10,7 @@ const api = (() => {
     /*
     *  Returns latitude and longitude for the selected location
     */
-    const urlLocation = `http://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${key}`;
+    const urlLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${location}&appid=${key}`;
     try {
       const response = await fetch(urlLocation, { mode: 'cors' });
       const data = await response.json();

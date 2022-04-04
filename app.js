@@ -1,8 +1,12 @@
 /* eslint-disable prefer-destructuring */
 // @ts-check
 
-const unitIsCelsius = true;
+// Global Vars
+let unitIsCelsius = true;
 let timeInterval;
+let weatherData;
+const forecastWeather = [];
+let currentWeather;
 
 const api = (() => {
   const key = '2e64fad7f4f5faa25c97c2f877a4d7e2';
@@ -132,7 +136,7 @@ function currentUpdateDOM(weatherData, location, country) {
     document.querySelector('#feels').textContent = `Feels like ${weatherData.temperature.celsius.feel} ºC`;
   } else {
     document.querySelector('#temp').textContent = `${weatherData.temperature.fahrenheit.current} ºF`;
-    document.querySelector('#feels').textContent = `${weatherData.temperature.fahrenheit.feel} ºF`;
+    document.querySelector('#feels').textContent = `Feels like ${weatherData.temperature.fahrenheit.feel} ºF`;
   }
   document.querySelector('#humidity-value').textContent = `${weatherData.humidity} %`;
 
@@ -159,8 +163,8 @@ function forecastUpdateDOM(weatherData) {
       dayElement.querySelector('.forecast-temp-max').textContent = `${dayData.temperature.celsius.max} ºC`;
       dayElement.querySelector('.forecast-temp-min').textContent = `${dayData.temperature.celsius.min} ºC`;
     } else {
-      dayElement.querySelector('.forecast-temp-max').textContent = `${dayData.temperature.fahrenheit.max} ºC`;
-      dayElement.querySelector('.forecast-temp-min').textContent = `${dayData.temperature.fahrenheit.min} ºC`;
+      dayElement.querySelector('.forecast-temp-max').textContent = `${dayData.temperature.fahrenheit.max} ºF`;
+      dayElement.querySelector('.forecast-temp-min').textContent = `${dayData.temperature.fahrenheit.min} ºF`;
     }
     dayElement.querySelector('.forecast-wind-value').textContent = `${dayData.wind.speed} km/h`;
     dayElement.querySelector('.forecast-wind-direction').style.transform = `rotate(${dayData.wind.deg}deg)`;
@@ -168,31 +172,43 @@ function forecastUpdateDOM(weatherData) {
   });
 }
 
-async function update(location) {
-  const weatherData = await api.getDailyForecast(location);
-  const currentWeather = weatherObj(weatherData.data.current, true);
-  const forecastWeather = [];
-  weatherData.data.daily.forEach((day) => {
-    forecastWeather.push(weatherObj(day, false));
-  });
+function updateDOMHandler(weatherData, currentWeather, forecastWeather) {
   const locationName = weatherData.locationData.name;
   const country = weatherData.locationData.country;
   const timezoneOffset = weatherData.data.timezone_offset;
+
   updateTime(timezoneOffset);
   currentUpdateDOM(currentWeather, locationName, country);
   forecastUpdateDOM(forecastWeather);
   clearInterval(timeInterval);
+
   timeInterval = setInterval(() => updateTime(timezoneOffset), 10000);
   // Display page after JS is loaded
   document.querySelector('.container').style.display = 'grid';
+}
+
+async function updateData(location) {
+  weatherData = await api.getDailyForecast(location);
+  currentWeather = weatherObj(weatherData.data.current, true);
+  weatherData.data.daily.forEach((day) => {
+    forecastWeather.push(weatherObj(day, false));
+  });
+  updateDOMHandler(weatherData, currentWeather, forecastWeather);
 }
 
 const searchForm = document.querySelector('#search-form');
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const searchBar = document.querySelector('#search-bar');
-  update(searchBar.value);
+  updateData(searchBar.value);
   searchBar.value = '';
 });
 
-update('Museros');
+const buttonUnits = document.querySelector('#temp-units');
+buttonUnits.addEventListener('click', () => {
+  unitIsCelsius = !unitIsCelsius;
+  buttonUnits.textContent = unitIsCelsius ? 'ºF' : 'ºC';
+  updateDOMHandler(weatherData, currentWeather, forecastWeather);
+});
+
+updateData('Valencia');

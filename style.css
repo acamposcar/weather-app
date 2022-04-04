@@ -13,59 +13,35 @@ body{
     font-family: Roboto, sans-serif;
     color: white;
     background-image: url(img/background.jpg);
-/*     background-position: center;  */
+    background-position: center;  
     background-repeat: no-repeat; 
     background-size: cover; 
     width: 100vw;
     min-height: 100vh;
 }
 
-a{
-	text-decoration: none;
-	color: hsl(0, 0%, calc(var(--lightness-offset, 0%) + 0%));    
-}
-
-a:hover{
-	--lightness-offset: 7%;
-}
-
-a:active{
-	--lightness-offset: -10%;
-}
-
-li{
-	list-style-type: none;
-}
 
 img{
 	max-width: 100%;
 
 }
- /*
-p {
-  font-size: clamp(1rem, 5vw, 1.5rem);
-}
 
-h1 {
-  font-size: clamp(1.75rem, 4vw + 1rem, 3rem);
-}
-*/
 button{
     border-radius: 1em;
-    border: none;
-	background-color: hsl(210, 86%, calc(var(--lightness-offset, 0%) + 57%));    
-	color: white;
+	background-color: transparent; 
+	color:  rgba(189, 189, 189, 0.856);
     padding: 0.5em 1em;
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     cursor: pointer;
+    border: solid thin rgba(189, 189, 189, 0.856);
+
 }
 
 button:hover{
-	--lightness-offset: 7%;
+	background-color: rgba(228, 228, 228, 0.281); 
 }
 
 button:active{
-	--lightness-offset: -10%;
+	background-color: rgba(190, 190, 190, 0.527); 
 }
 
 .navbar{
@@ -136,6 +112,7 @@ button:active{
     color: white;
     text-align: center;
 }
+
 #time{
 
     font-size: clamp(130px, 16vw ,240px);
@@ -150,6 +127,13 @@ button:active{
     padding-right: 2rem;
 
 }
+
+#temp-units{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
 .group{
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -170,15 +154,8 @@ button:active{
     font-weight: bold;
     font-size: clamp(18px, 2vw, 24px);
 }
-#humidity{
-    
-}
-#pressure{
-    
-}
-#wind{
-    
-}
+
+
 
 #wind-value-direction{
     display: flex;
@@ -248,6 +225,11 @@ button:active{
         grid-template-rows: 50px max(10vh, 60px) 15vh 60vh;
         overflow: auto;
 
+    }
+
+    #temp-units{
+        right: 10px;
+        top: 10px;
     }
 
     #forecast{

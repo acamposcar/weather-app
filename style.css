@@ -56,7 +56,7 @@ button:active {
 	min-height: 100vh;
 	padding: clamp(10px, 1.2vw, 32px);
 	grid-template-columns: 1fr 2fr 1fr;
-	grid-template-rows: 60vh 30vh;
+	grid-template-rows: max(60vh, 300px) max(30vh, 150px);
 }
 
 #icon {

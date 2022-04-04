@@ -5,7 +5,7 @@
 let unitIsCelsius = true;
 let timeInterval;
 let weatherData;
-const forecastWeather = [];
+let forecastWeather = [];
 let currentWeather;
 
 const api = (() => {
@@ -157,7 +157,7 @@ function forecastWeatherDOM(weatherData) {
     } else if (today + i <= 6) {
       dayElement.querySelector('.forecast-day').textContent = days[today + i];
     } else {
-      dayElement.querySelector('.forecast-day').textContent = days[today - 7 + i];
+      dayElement.querySelector('.forecast-day').textContent = days[today + i - 7];
     }
     dayElement.querySelector('.forecast-icon').src = dayData.iconURL;
     if (unitIsCelsius) {
@@ -191,6 +191,7 @@ function updateDOMHandler(weatherData, currentWeather, forecastWeather) {
 async function updateData(location) {
   weatherData = await api.getDailyForecast(location);
   currentWeather = weatherObj(weatherData.data.current, true);
+  forecastWeather = [];
   weatherData.data.daily.forEach((day) => {
     forecastWeather.push(weatherObj(day, false));
   });

@@ -11,6 +11,12 @@ body{
 	border: 0px solid transparent;
     font-family: Roboto, sans-serif;
     color: white;
+    background-image: url(/img/background.jpg);
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    width: 100vw;
+    height: 100vh;
 }
 
 a{
@@ -67,17 +73,15 @@ button:active{
 }
 
 .container{
+        /* Hide page until JS is fully loaded*/
+    display: none;
     margin: 0 auto;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     padding: 2rem 2rem 1rem 2rem;
-    display:grid;
     grid-template-columns: 1fr 2fr 1fr ;
     grid-template-rows: 2fr 1fr;
-    background-image: url(/img/bh7.jpg);
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
+
 }
 #icon{
     width: 8rem;;
@@ -87,7 +91,6 @@ button:active{
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 #description{
     text-transform: capitalize;
@@ -173,6 +176,16 @@ button:active{
 #wind{
     
 }
+
+#wind-value-direction{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#wind-direction{
+    width: 2.5rem;
+}
 #forecast{
     grid-column: span 3;
     padding: 2rem;
@@ -192,4 +205,14 @@ button:active{
 
 .forecast-icon{
     width: 4rem;;
+}
+
+.forecast-flex{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.forecast-icon-sm{
+    width: 1.5rem;
 }

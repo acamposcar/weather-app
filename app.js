@@ -14,10 +14,13 @@ const api = (() => {
     try {
       const response = await fetch(urlLocation, { mode: 'cors' });
       const data = await response.json();
+      const name = data[0].name;
       const lat = data[0].lat;
       const lon = data[0].lon;
       const country = data[0].country;
-      return { lat, lon, country };
+      return {
+        lat, lon, country, name,
+      };
     } catch (error) {
       console.log('Error:', error);
     }
@@ -27,12 +30,12 @@ const api = (() => {
     /*
     *  Returns daily forecast for the selected location
     */
-    const coordinates = await getCoordinates(location);
-    const urlLatLon = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${key}&units=metric`;
+    const locationData = await getCoordinates(location);
+    const urlLatLon = `https://api.openweathermap.org/data/2.5/onecall?lat=${locationData.lat}&lon=${locationData.lon}&exclude=minutely,hourly&appid=${key}&units=metric`;
     try {
       const response = await fetch(urlLatLon, { mode: 'cors' });
       const data = await response.json();
-      return (data);
+      return { data, locationData };
     } catch (error) {
       console.log('Error:', error);
     }
@@ -78,25 +81,11 @@ const weatherObj = (data, isCurrent) => {
   };
 
   const windObj = (windSpeed, windDeg) => {
-    const degreeToDirection = (deg) => {
-    /*
-    *  Convert 0-360º to direction (N, S,...)
-    */
-      const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-      // Split into the 8 directions
-      const degrees = deg * 8 / 360;
-      let index = Math.round(degrees);
-      // Ensure it's within 0-7
-      index = (index + 8) % 8;
-
-      return directions[index];
-    };
     // Convert speed from m/s to km/h and round result
     const speed = Math.round(windSpeed * 3.6);
     const deg = windDeg;
-    const direction = degreeToDirection(deg);
     return {
-      speed, deg, direction,
+      speed, deg,
     };
   };
 
@@ -104,25 +93,39 @@ const weatherObj = (data, isCurrent) => {
   const description = data.weather[0].description;
   const icon = data.weather[0].icon;
   const iconURL = `/svg/${icon}.svg`;
+
+  const pressure = data.pressure;
+  const humidity = data.humidity;
+  const wind = windObj(data.wind_speed, data.wind_deg);
+  const probPrecipitation = data.pop;
+  const rain = data.rain ? Math.floor(data.rain) : 0;
+
   let temperature;
   if (isCurrent) {
     temperature = temperatureObj(data.temp, undefined, undefined, data.feels_like);
   } else {
     temperature = temperatureObj(undefined, data.temp.min, data.temp.max, undefined);
   }
-  const pressure = data.pressure;
-  const humidity = data.humidity;
-  const wind = windObj(data.wind_speed, data.wind_deg);
 
   return {
-    summary, description, iconURL, temperature, pressure, humidity, wind,
+    summary, description, iconURL, temperature, pressure, humidity, wind, probPrecipitation, rain,
   };
 };
 
-function currentUpdateDOM(weatherData) {
+function updateTime(timezoneOffset) {
+  const now = new Date();
+  const localTime = new Date();
+  localTime.setTime(now.getTime() + timezoneOffset * 1000);
+  const hours = `${localTime.getUTCHours()}`;
+  // At least two digits for minutes
+  const minutes = (localTime.getUTCMinutes() < 10) ? `0${localTime.getUTCMinutes()}` : `${localTime.getUTCMinutes()}`;
+  document.querySelector('#time').textContent = `${hours}:${minutes}`;
+}
+
+function currentUpdateDOM(weatherData, location, country) {
   document.querySelector('#icon').src = weatherData.iconURL;
-  document.querySelector('#description').textContent = weatherData.description;
-  // document.querySelector('#city').textContent = `${weatherData.name}, ${weatherData.country}`;
+  document.querySelector('#description').textContent = weatherData.summary;
+  document.querySelector('#city').textContent = `${location}, ${country}`;
   if (unitIsCelsius) {
     document.querySelector('#temp').textContent = `${weatherData.temperature.celsius.current} ºC`;
     document.querySelector('#feels').textContent = `Feels like ${weatherData.temperature.celsius.feel} ºC`;
@@ -131,7 +134,10 @@ function currentUpdateDOM(weatherData) {
     document.querySelector('#feels').textContent = `${weatherData.temperature.fahrenheit.feel} ºF`;
   }
   document.querySelector('#humidity-value').textContent = `${weatherData.humidity} %`;
-  document.querySelector('#wind-value').textContent = `${weatherData.wind.speed} km/h ${weatherData.wind.direction}`;
+
+  document.querySelector('#wind-value').textContent = `${weatherData.wind.speed} km/h`;
+  document.querySelector('#wind-direction').style.transform = `rotate(${weatherData.wind.deg}deg)`;
+
   document.querySelector('#pressure-value').textContent = `${weatherData.pressure} mbar`;
 }
 
@@ -142,8 +148,10 @@ function forecastUpdateDOM(weatherData) {
     const dayElement = document.querySelector(`[data-index="${i}"]`);
     if (i === 0) {
       dayElement.querySelector('.forecast-day').textContent = 'Today';
-    } else {
+    } else if (today + i <= 6) {
       dayElement.querySelector('.forecast-day').textContent = days[today + i];
+    } else {
+      dayElement.querySelector('.forecast-day').textContent = days[today - 7 + i];
     }
     dayElement.querySelector('.forecast-icon').src = dayData.iconURL;
     if (unitIsCelsius) {
@@ -153,27 +161,36 @@ function forecastUpdateDOM(weatherData) {
       dayElement.querySelector('.forecast-temp-max').textContent = `${dayData.temperature.fahrenheit.max} ºC`;
       dayElement.querySelector('.forecast-temp-min').textContent = `${dayData.temperature.fahrenheit.min} ºC`;
     }
-    dayElement.querySelector('.forecast-wind').textContent = `${dayData.wind.speed} km/h ${dayData.wind.direction}`;
+    dayElement.querySelector('.forecast-wind-value').textContent = `${dayData.wind.speed} km/h`;
+    dayElement.querySelector('.forecast-wind-direction').style.transform = `rotate(${dayData.wind.deg}deg)`;
+    dayElement.querySelector('.forecast-precipitation-value').textContent = `${dayData.rain} mm`;
   });
 }
 
-async function main(location) {
+async function update(location) {
   const weatherData = await api.getDailyForecast(location);
-  const currentWeather = weatherObj(weatherData.current, true);
+  const currentWeather = weatherObj(weatherData.data.current, true);
   const forecastWeather = [];
-  weatherData.daily.forEach((day) => {
+  weatherData.data.daily.forEach((day) => {
     forecastWeather.push(weatherObj(day, false));
   });
-  currentUpdateDOM(currentWeather);
+  const locationName = weatherData.locationData.name;
+  const country = weatherData.locationData.country;
+  const timezoneOffset = weatherData.data.timezone_offset;
+  updateTime(timezoneOffset);
+  currentUpdateDOM(currentWeather, locationName, country);
   forecastUpdateDOM(forecastWeather);
+  setInterval(() => updateTime(timezoneOffset), 10000);
+  // Display page after JS is loaded
+  document.querySelector('.container').style.display = 'grid';
 }
 
 const searchForm = document.querySelector('#search-form');
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const searchBar = document.querySelector('#search-bar');
-  main(searchBar.value);
+  update(searchBar.value);
   searchBar.value = '';
 });
 
-main('Museros');
+update('Museros');

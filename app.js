@@ -92,7 +92,7 @@ const weatherObj = (data, isCurrent) => {
   const summary = data.weather[0].main;
   const description = data.weather[0].description;
   const icon = data.weather[0].icon;
-  const iconURL = `/svg/${icon}.svg`;
+  const iconURL = `svg/${icon}.svg`;
 
   const pressure = data.pressure;
   const humidity = data.humidity;

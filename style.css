@@ -1,4 +1,5 @@
 html {
+  font-size: clamp(14px, 1vw, 16px);
   box-sizing: border-box;
 }
 *, *:before, *:after {
@@ -78,20 +79,21 @@ button:active{
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    padding: 2rem 2rem 1rem 2rem;
+    padding: clamp(10px, 1.2vw, 32px);
     grid-template-columns: 1fr 2fr 1fr ;
     grid-template-rows: 2fr 1fr;
-
 }
+
 #icon{
     width: 8rem;;
 }
 
 #left-bar{
-
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
+
 #description{
     text-transform: capitalize;
     font-size: 1.2rem;
@@ -108,7 +110,7 @@ button:active{
 }
 #temp{
     margin-top: 1.5rem;
-    font-size: 4rem;
+    font-size: clamp(48px, 2vw + 30px, 64px);
     font-weight: bold;
 }
 #feels{
@@ -135,7 +137,7 @@ button:active{
 }
 #time{
 
-    font-size: 15rem;
+    font-size: clamp(130px, 16vw ,240px);
     font-weight: bold;
 }
 #right-bar{
@@ -165,7 +167,7 @@ button:active{
 
 .group .value{
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: clamp(18px, 2vw, 24px);
 }
 #humidity{
     
@@ -215,4 +217,149 @@ button:active{
 
 .forecast-icon-sm{
     width: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+  [data-index="7"]{
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  [data-index="6"]{
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+
+
+
+    #time {
+        display: none;
+    }
+
+    .container{
+        /* Hide page until JS is fully loaded*/
+        padding: 5px;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        grid-template-rows: max-content max-content max-content max-content;
+        padding-right: 1em;
+    }
+
+    #forecast{
+        grid-column: 1;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .forecast-card{
+        display: grid;
+        grid-template-columns: 90px 50px 60px 50px 50px 60px;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    .forecast-icon{
+        width: 2.5rem;
+    }
+    .forecast-temp-max{
+        font-size: 1.2rem;
+    }
+    .forecast-day{
+        font-size: 1rem;
+        margin-bottom: 0rem;
+    }
+    .forecast-wind{
+        justify-self: end;
+    }
+
+    #center{
+        margin-top: 1rem;
+        grid-row: 1;
+
+    }
+    #right-bar{
+        display: grid;
+        grid-template-columns: 110px 110px 110px;
+        gap: 1rem;
+        justify-content: center;
+        align-items: baseline;
+        justify-items: center;
+        padding-right: 1rem;
+        margin-bottom: 1rem;
+
+    }
+    #info{
+        display: flex;
+        align-items: flex-end;
+        gap: 30px;
+
+    }
+    .forecast-icon-sm{
+        display: none;
+    }
+
+    .group{
+        display: grid;
+        grid-template-columns: max-content max-content;
+        column-gap: 0.5rem;
+    }
+    .group > .material-icons-outlined{
+        grid-row: span 2;
+        font-size: 1.5rem;
+        color: rgba(189, 189, 189, 0.856);
+    }
+
+    .group .text{
+        color: rgba(189, 189, 189, 0.856);
+        font-size: 1rem;
+    }
+
+    .group .value{
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    #wind-direction{
+        width: 1.5rem;
+    }
+
+    #left-bar{
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        margin-bottom: 10px;
+    }
+
+    #icon{
+    width: 4rem;;
+    }
+
+    #description{
+    font-size: 1.2rem;
+
+    }
+
+    #info{
+        padding-left: 1rem;
+    }
+
+    #city{
+        margin-top: 0.5rem;
+        font-size: 1.2rem;
+    }
+    #temp{
+        margin-top: 1.5rem;
+        font-size: 2rem;
+    }
+    #feels{
+        font-size: 1.2rem;
+        color: rgba(189, 189, 189, 0.856);
+
+    }
+
 }

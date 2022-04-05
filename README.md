@@ -7,8 +7,8 @@ A weather app made with JS
 
 - ### Desktop
 
-![Desktop](https://user-images.githubusercontent.com/9263545/161567616-5987228b-5204-4ac4-9c90-ede98c9e2ba2.png)
+![Desktop](https://user-images.githubusercontent.com/9263545/161732759-ebb70733-d7ff-4c61-a9df-9a6259c0cbd9.png)
 
 - ### Mobile Phone
 
-![Phone](https://user-images.githubusercontent.com/9263545/161567896-840f2fec-7b13-4813-9ea6-0cb12123a451.png)
+![phone](https://user-images.githubusercontent.com/9263545/161732980-b7f2d93a-f142-464c-8ef7-87ec4bdbba84.png)
